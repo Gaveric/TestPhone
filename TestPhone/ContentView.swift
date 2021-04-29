@@ -15,11 +15,30 @@ struct ContentView: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
         animation: .default)
     private var items: FetchedResults<Item>
+    @State private var phoneN = ""
 
     var body: some View {
         List {
+            
+//TextField("Enter your name", text: $phone)
+            
+            TextField("Name: ", text: $phoneN)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                .keyboardType(.numberPad)
+            
+            Button(action: addItem) {
+                Label("Add Item", systemImage: "plus")
+                
+            }
+            
             ForEach(items) { item in
-                Text("Item at \(item.timestamp!, formatter: itemFormatter)")
+                HStack {
+                    Text ("Operator")
+                    
+                    Text("\(item.phone ?? "no phone")")
+
+                    Text("\(item.timestamp!, formatter: itemFormatter)")
+                }
             }
             .onDelete(perform: deleteItems)
         }
@@ -28,9 +47,7 @@ struct ContentView: View {
             EditButton()
             #endif
 
-            Button(action: addItem) {
-                Label("Add Item", systemImage: "plus")
-            }
+
         }
     }
 
@@ -38,6 +55,7 @@ struct ContentView: View {
         withAnimation {
             let newItem = Item(context: viewContext)
             newItem.timestamp = Date()
+            newItem.phone = phoneN
 
             do {
                 try viewContext.save()
