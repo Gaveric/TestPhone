@@ -15,6 +15,7 @@
 		CE44B4F926396A6100D6A3D0 /* TestPhone.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CE44B4F726396A6100D6A3D0 /* TestPhone.xcdatamodeld */; };
 		CE44B50426396A6100D6A3D0 /* TestPhoneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE44B50326396A6100D6A3D0 /* TestPhoneTests.swift */; };
 		CE44B50F26396A6100D6A3D0 /* TestPhoneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE44B50E26396A6100D6A3D0 /* TestPhoneUITests.swift */; };
+		CE44B523263ADB2100D6A3D0 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE44B522263ADB2100D6A3D0 /* Model.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		CE44B50A26396A6100D6A3D0 /* TestPhoneUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestPhoneUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE44B50E26396A6100D6A3D0 /* TestPhoneUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPhoneUITests.swift; sourceTree = "<group>"; };
 		CE44B51026396A6100D6A3D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CE44B522263ADB2100D6A3D0 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 			children = (
 				CE44B4EC26396A5E00D6A3D0 /* TestPhoneApp.swift */,
 				CE44B4EE26396A5E00D6A3D0 /* ContentView.swift */,
+				CE44B522263ADB2100D6A3D0 /* Model.swift */,
 				CE44B4F026396A6100D6A3D0 /* Assets.xcassets */,
 				CE44B4F526396A6100D6A3D0 /* Persistence.swift */,
 				CE44B4FA26396A6100D6A3D0 /* Info.plist */,
@@ -265,6 +268,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE44B523263ADB2100D6A3D0 /* Model.swift in Sources */,
 				CE44B4F926396A6100D6A3D0 /* TestPhone.xcdatamodeld in Sources */,
 				CE44B4F626396A6100D6A3D0 /* Persistence.swift in Sources */,
 				CE44B4EF26396A5E00D6A3D0 /* ContentView.swift in Sources */,

@@ -1,87 +1,97 @@
-//
-//  ContentView.swift
-//  TestPhone
-//
-//  Created by User on 28.04.2021.
-//
 
 import SwiftUI
 import CoreData
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
-
+    
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
         animation: .default)
     private var items: FetchedResults<Item>
-    @State private var phoneN = ""
-
+    
+    @State var phoneN = ""
+    
+    @State var opera = ""
+    
     var body: some View {
-        List {
-            
-//TextField("Enter your name", text: $phone)
-            
-            TextField("Name: ", text: $phoneN)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                .keyboardType(.numberPad)
-            
-            Button(action: addItem) {
-                Label("Add Item", systemImage: "plus")
+        List { // }(myResponse){myResponse in
+            VStack {
                 
-            }
-            
-            ForEach(items) { item in
                 HStack {
-                    Text ("Operator")
+                    TextField("Name: ", text: $phoneN)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .keyboardType(.numberPad)
                     
-                    Text("\(item.phone ?? "no phone")")
-
-                    Text("\(item.timestamp!, formatter: itemFormatter)")
+                    Button(action: addItem) {
+                        Label("Узнать оператора", systemImage: "phone")
+                        }
+                }
+                
+                ForEach(items) { item in
+                    HStack {
+                        
+                        Text ("\(item.myOperator ?? "проверка не удалась")")
+                        Text("\(item.phone ?? "no phone")")
+                        Text("\(item.timestamp!, formatter: itemFormatter)")
+                    }
+                }
+                .onDelete(perform: deleteItems)
+            }
+        }
+        
+    }
+    
+    
+    private func addItem() {
+        
+        guard let url = URL(string: "http://pay.payfon24.ru/mno?phone=\(phoneN)") else { return }
+        dump (url)
+        
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
+            guard let data = data else { return }
+            let myResponse = try! JSONDecoder().decode(ResponseModel.self, from: data)
+            dump(myResponse)
+            opera = myResponse.mnoText
+        }
+        .resume()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            withAnimation {
+                if opera != "" {
+                    let newItem = Item (context: viewContext)
+                    newItem.timestamp = Date()
+                    newItem.phone = phoneN
+                    newItem.myOperator = opera
+                    opera = ""
+                    
+                    do {
+                        try viewContext.save()
+                    } catch {
+                        
+                        let nsError = error as NSError
+                        fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+                    }
                 }
             }
-            .onDelete(perform: deleteItems)
-        }
-        .toolbar {
-            #if os(iOS)
-            EditButton()
-            #endif
-
-
         }
     }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
-            newItem.phone = phoneN
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
-        }
-    }
-
+    
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             offsets.map { items[$0] }.forEach(viewContext.delete)
-
+            
             do {
                 try viewContext.save()
             } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                
                 let nsError = error as NSError
                 fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
             }
         }
     }
+    
+    
 }
 
 private let itemFormatter: DateFormatter = {

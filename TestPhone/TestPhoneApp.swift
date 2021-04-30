@@ -1,9 +1,4 @@
-//
-//  TestPhoneApp.swift
-//  TestPhone
-//
-//  Created by User on 28.04.2021.
-//
+
 
 import SwiftUI
 
@@ -18,3 +13,5 @@ struct TestPhoneApp: App {
         }
     }
 }
+
+ 
